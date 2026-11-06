@@ -2,9 +2,10 @@
 import { ref } from 'vue'
 import TabManager from './TabManager.vue'
 import TabPane from './TabPane.vue'
+import { useRouteQuery } from '@vueuse/router'
 
 const n = ref(4)
-const currentTab = ref(0)
+const currentTab = useRouteQuery<number, number>("tab", 0, { transform: Number, mode: "push"})
 </script>
 
 <template>
@@ -21,8 +22,8 @@ const currentTab = ref(0)
   <hr />
 
   <div>
-    <TabManager v-model="currentTab">
-      <TabPane v-for="i in n" :key="i" :title="`Tab ${i} / ${n}`">
+    <TabManager>
+      <TabPane v-for="i in n" :key="i" data-test="tab-pane" :title="`Tab ${i} / ${n}`">
         <h2>This is Tab {{ i }}</h2>
       </TabPane>
     </TabManager>

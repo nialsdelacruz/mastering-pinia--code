@@ -1,23 +1,17 @@
-import { effectScope } from 'vue'
+import { effectScope } from "vue"
 
 const stores = new WeakMap<() => unknown, unknown>()
+const globalScope = effectScope(true)
 
-const globalEffect = effectScope(true)
-
-export function defineStore<R>(fn: () => R) {
+export function defineStore<T>(fn: () => T) {
   function useStore() {
-    if (!stores.has(fn)) {
-      const store = globalEffect
-        .run(() =>
-          // this one is nested in the global, so we don't pass true
-          effectScope(),
-        )!
-        .run(() => fn())!
 
+    if(!stores.has(fn)) {
+      const store = globalScope.run(() => effectScope().run(fn))
       stores.set(fn, store)
     }
-
-    return stores.get(fn) as R
+    
+    return stores.get(fn) as T
   }
 
   return useStore

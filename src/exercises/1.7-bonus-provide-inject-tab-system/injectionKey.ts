@@ -1,7 +1,3 @@
 import { InjectionKey, Ref } from 'vue'
 
-export const useTabKey: InjectionKey<
-  (title: Ref<string>) => {
-    isVisible: Ref<boolean>
-  }
-> = Symbol('useTab')
+export const registerTabKey: InjectionKey<(title: Ref<string>) => { isVisible: Ref<boolean> }> = Symbol('tabs')

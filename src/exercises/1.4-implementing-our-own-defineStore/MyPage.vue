@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useCountStore } from './store'
 
-const { double, n, increment } = useCountStore()
+const { double, n } = useCountStore()
 </script>
 
 <template>
@@ -9,5 +9,5 @@ const { double, n, increment } = useCountStore()
     Count: <span data-test="count">{{ n }}</span
     >. {{ n }} x 2 = <span data-test="double">{{ double }}</span>
   </p>
-  <button data-test="increment" @click="increment(1)">Increment ({{ n }})</button>
+  <button data-test="increment" @click="n++">Increment ({{ n }})</button>
 </template>
