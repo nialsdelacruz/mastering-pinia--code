@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, ref, toRef, watch } from 'vue'
 import { useTodosStore } from '../../stores/todos'
 import { storeToRefs } from 'pinia'
 import { useTimeAgo } from '@vueuse/core'
@@ -17,10 +17,12 @@ function addTodo() {
 }
 
 const lastAdded = useTimeAgo(
-  () =>
-    todos.mostRecent?.createdAt ||
-    // this is just to avoid an undefined value
-    Date.now(),
+  computed(
+    () =>
+      toRef(todos, 'mostRecent').value?.createdAt ||
+      // this is just to avoid an undefined value
+      Date.now(),
+  ),
   {
     showSecond: true,
     rounding: 'floor',
@@ -30,36 +32,12 @@ const lastAdded = useTimeAgo(
 
 const todoListChanges = ref(0)
 watch(
-  () => todos.list,
+  todos,
   () => {
     todoListChanges.value++
   },
-  { deep: true },
+  { deep: false },
 )
-
-// NOTE: failing cases to keep in starter
-// const lastAdded = useTimeAgo(
-//   computed(
-//     () =>
-//       toRef(todos, 'mostRecent').value?.createdAt ||
-//       // this is just to avoid an undefined value
-//       Date.now(),
-//   ),
-//   {
-//     showSecond: true,
-//     rounding: 'floor',
-//     updateInterval: 1000,
-//   },
-// )
-
-// const todoListChanges = ref(0)
-// watch(
-//   todos,
-//   () => {
-//     todoListChanges.value++
-//   },
-//   { deep: false },
-// )
 </script>
 
 <template>
@@ -67,7 +45,7 @@ watch(
 
   <ClientOnly>
     <main>
-      <h3>Performance (1)</h3>
+      <h2>Performance (1)</h2>
 
       <p>
         The list of todos have been changed {{ todoListChanges }} time(s). Try marking the same todo as finished

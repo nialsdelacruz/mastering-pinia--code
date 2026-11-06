@@ -1,15 +1,9 @@
 import { User, UserRegister, login as _login, registerUser } from '@/api/auth'
 import { defineStore, acceptHMRUpdate } from 'pinia'
-import { computed, ref } from 'vue'
-
-const useAuthPrivate = defineStore('auth-private', () => {
-  const currentUser = ref<User | null>(null)
-
-  return { currentUser }
-})
+import { ref } from 'vue'
 
 export const useAuthStore = defineStore('auth', () => {
-  const privateState = useAuthPrivate()
+  const currentUser = ref<User | null>(null)
 
   function signup(userInfo: UserRegister): Promise<User> {
     return registerUser(userInfo)
@@ -17,15 +11,15 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login(email: string, password: string) {
     const user = await _login({ email, password })
-    privateState.currentUser = user
+    currentUser.value = user
   }
 
   function logout() {
-    privateState.currentUser = null
+    currentUser.value = null
   }
 
   return {
-    currentUser: computed(() => privateState.currentUser),
+    currentUser,
     signup,
     login,
     logout,
@@ -34,5 +28,4 @@ export const useAuthStore = defineStore('auth', () => {
 
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot))
-  import.meta.hot.accept(acceptHMRUpdate(useAuthPrivate, import.meta.hot))
 }

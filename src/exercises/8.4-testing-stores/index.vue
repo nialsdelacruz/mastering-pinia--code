@@ -63,11 +63,11 @@ async function login() {
         <p v-if="registerError">{{ registerError }}</p>
 
         <label for="register-email"> Email: </label>
-        <input id="register-email" v-model="registerEmail" required type="text" autocomplete="email" />
+        <input id="register-email" v-model="registerEmail" required type="text" />
         <label for="register-password"> Password: </label>
-        <input id="register-password" v-model="registerPassword" required type="password" autocomplete="new-password" />
+        <input id="register-password" v-model="registerPassword" required type="password" />
         <label for="register-display-name"> Display Name: </label>
-        <input id="register-display-name" v-model="registerDisplayName" required type="text" autocomplete="name" />
+        <input id="register-display-name" v-model="registerDisplayName" required type="text" />
       </fieldset>
 
       <button>Signup</button>
@@ -80,9 +80,9 @@ async function login() {
         <p v-if="loginError">{{ loginError }}</p>
 
         <label for="login-email"> Email: </label>
-        <input id="login-email" v-model="loginEmail" required type="text" autocomplete="email" />
+        <input id="login-email" v-model="loginEmail" required type="text" />
         <label for="login-password"> Password: </label>
-        <input id="login-password" v-model="loginPassword" required type="password" autocomplete="current-password" />
+        <input id="login-password" v-model="loginPassword" required type="password" />
       </fieldset>
 
       <button>Login</button>

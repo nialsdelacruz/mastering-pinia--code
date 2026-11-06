@@ -2,17 +2,22 @@
 // to work on the Type Safety part
 /* eslint @typescript-eslint/no-explicit-any:1 */
 
-import { SetupStoreDefinition, defineStore } from 'pinia'
+import { defineStore } from 'pinia'
+import { computed, reactive, ref } from 'vue'
 
-export function definePrivateStore<Id extends string, PrivateStore, StoreSetup>(
-  id: Id,
-  privateStoreSetup: () => PrivateStore,
-  setup: (privateState: ReturnType<SetupStoreDefinition<string, PrivateStore>>) => StoreSetup,
-) {
-  const usePrivateStore = defineStore(id + '_private', privateStoreSetup)
-
+export function definePrivateStore(id: any, privateStoreSetup: any, setup: any) {
   return defineStore(id, () => {
-    const privateStore = usePrivateStore()
+    // FIXME: you will have to rewrite the whole function
+    const n = ref(0)
+    const privateStore = reactive({
+      n: 0,
+      double: computed(() => n.value * 2),
+
+      increment(amount = 1) {
+        n.value += amount
+      },
+    })
+
     return setup(privateStore)
   })
 }
